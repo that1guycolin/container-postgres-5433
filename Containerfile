@@ -84,7 +84,7 @@ RUN dpkg-divert --add --rename --divert "/usr/share/postgresql/postgresql.conf.s
 
 RUN install --verbose --directory --owner postgres --group postgres --mode 3777 /var/run/postgresql
 
-ENV PGDATA /var/lib/postgresql/18/docker
+ENV PGDATA /var/lib/postgresql/18/container
 VOLUME /var/lib/postgresql
 
 COPY container-entrypoint.sh ensure-initdb.sh /usr/local/bin/

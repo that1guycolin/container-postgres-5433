@@ -229,9 +229,9 @@ function container_setup_env {
     declare -ag OLD_DATABASES=()
     if [ -s "$PGDATA/PG_VERSION" ]; then
         DATABASE_ALREADY_EXISTS='true'
-    elif [ "$PGDATA" = "/var/lib/postgresql/$PG_MAJOR/docker" ]; then
+    elif [ "$PGDATA" = "/var/lib/postgresql/$PG_MAJOR/container" ]; then
         for d in /var/lib/postgresql /var/lib/postgresql/data \
-            /var/lib/postgresql/*/docker; do
+            /var/lib/postgresql/*/container; do
             if [ -s "$d/PG_VERSION" ]; then
                 OLD_DATABASES+=("$d")
             fi
