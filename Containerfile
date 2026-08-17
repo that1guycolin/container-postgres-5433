@@ -77,7 +77,10 @@ RUN dpkg-divert --add --rename --divert "/usr/share/postgresql/postgresql.conf.s
     && ln -sv ../postgresql.conf.sample "/usr/share/postgresql/$PG_MAJOR/" \
     && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" \
     /usr/share/postgresql/postgresql.conf.sample \
-    && grep -F "listen_addresses = '*'" /usr/share/postgresql/postgresql.conf.sample
+    && grep -F "listen_addresses = '*'" /usr/share/postgresql/postgresql.conf.sample \
+    && sed -ri "s!^#?(port)\s*=\s*\S+.*!\1 = 5433!" \
+    /usr/share/postgresql/postgresql.conf.sample \
+    && grep -F "port = 5433" /usr/share/postgresql/postgresql.conf.sample
 
 RUN install --verbose --directory --owner postgres --group postgres --mode 3777 /var/run/postgresql
 

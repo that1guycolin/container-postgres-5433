@@ -336,6 +336,21 @@ EOM
         unset "${!POSTGRES_@}"
     fi
 
+    if [ "$1" = 'postgres' ] && ! _pg_want_help "$@"; then
+        local arg has_port=false
+        for arg in "$@"; do
+            case "$arg" in
+                -p | --port | -p=* | --port=*)
+                    has_port=true
+                    break
+                    ;;
+            esac
+        done
+        if [[ $has_port == false ]]; then
+            set -- "$@" -p 5433
+        fi
+    fi
+
     exec "$@"
 }
 
