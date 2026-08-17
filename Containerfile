@@ -87,7 +87,7 @@ VOLUME /var/lib/postgresql
 COPY container-entrypoint.sh ensure-initdb.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/container-entrypoint.sh \
     && chmod +x /usr/local/bin/ensure-initdb.sh
-RUN ln -sT ensure-initdb.sh /usr/local/bin/docker-enforce-initdb.sh
+RUN ln -sT ensure-initdb.sh /usr/local/bin/enforce-initdb.sh
 ENTRYPOINT ["/usr/local/bin/container-entrypoint.sh"]
 
 STOPSIGNAL SIGINT

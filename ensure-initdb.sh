@@ -39,7 +39,7 @@ else
             exit 0
             ;;
 
-        docker-enforce-initdb.sh)
+        enforce-initdb.sh)
             echo >&2 "$self: error: (unexpected) database found in '$PGDATA'!"
             exit 1
             ;;
