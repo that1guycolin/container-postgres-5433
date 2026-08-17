@@ -60,10 +60,14 @@ function container_init_database_dir {
             if [ -s "$wrapper" ]; then
                 NSS_WRAPPER_PASSWD="$(mktemp)"
                 NSS_WRAPPER_GROUP="$(mktemp)"
-                export LD_PRELOAD="$wrapper" NSS_WRAPPER_PASSWD NSS_WRAPPER_GROUP
+                LD_PRELOAD="$wrapper"
+                export NSS_WRAPPER_PASSWD
+                export NSS_WRAPPER_GROUP
+                export LD_PRELOAD
                 local gid
                 gid="$(id -g)"
-                printf 'postgres:x:%s:%s:PostgreSQL:%s:/bin/false\n' "$uid" "$gid" "$PGDATA" >"$NSS_WRAPPER_PASSWD"
+                printf 'postgres:x:%s:%s:PostgreSQL:%s:/bin/false\n' \
+                    "$uid" "$gid" "$PGDATA" >"$NSS_WRAPPER_PASSWD"
                 printf 'postgres:x:%s:\n' "$gid" >"$NSS_WRAPPER_GROUP"
                 break
             fi
@@ -182,12 +186,16 @@ function container_process_init_files {
 }
 
 function container_process_sql {
-    local query_runner=(psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --no-password --no-psqlrc)
+    local query_runner=(
+        psql -v ON_ERROR_STOP=1 -p 5433
+        --username "$POSTGRES_USER"
+        --no-password --no-psqlrc
+    )
     if [ -n "$POSTGRES_DB" ]; then
         query_runner+=(--dbname "$POSTGRES_DB")
     fi
 
-    PGHOST='' PGHOSTADDR='' "${query_runner[@]}" "$@"
+    "${query_runner[@]}" "$@"
 }
 
 function container_setup_db {
@@ -260,7 +268,7 @@ function container_temp_server_start {
         shift
     fi
 
-    set -- "$@" -c listen_addresses='' -p "${PGPORT:-5433}"
+    set -- "$@" -c listen_addresses='' -p 5433
 
     NOTIFY_SOCKET='' \
         PGUSER="${PGUSER:-$POSTGRES_USER}" \
