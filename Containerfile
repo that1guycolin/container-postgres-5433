@@ -92,3 +92,8 @@ STOPSIGNAL SIGINT
 
 EXPOSE 5433
 CMD ["postgres"]
+
+LABEL org.opencontainers.image.source=https://github.com/that1guycolin/container-postgres-5433
+LABEL org.opencontainers.image.description="Custom version of postgresSQL that runs on port 5433 \
+instead of 5432"
+LABEL org.opencontainers.image.licenses=MIT
