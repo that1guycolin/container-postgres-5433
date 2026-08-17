@@ -24,14 +24,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image with Buildah
         id: build-image
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: latest ${{ github.event.release.tag_name }}
           containerfiles: |
             ./Containerfile
       - name: Push to GHCR
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v3
         with:
           image: ${{ steps.build-image.outputs.image }}
           tags: ${{ steps.build-image.outputs.tags }}
