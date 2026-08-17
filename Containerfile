@@ -85,6 +85,8 @@ ENV PGDATA /var/lib/postgresql/18/docker
 VOLUME /var/lib/postgresql
 
 COPY container-entrypoint.sh ensure-initdb.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/container-entrypoint.sh \
+    && chmod +x /usr/local/bin/ensure-initdb.sh
 RUN ln -sT ensure-initdb.sh /usr/local/bin/docker-enforce-initdb.sh
 ENTRYPOINT ["container-entrypoint.sh"]
 
